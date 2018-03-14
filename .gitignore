@@ -26,3 +26,11 @@
 *.iml
 .idea/
 
+/.vs/agent-windows/v15/.suo
+*.db
+*.ipch
+*.lock
+*.ide
+*.ide-shm
+*.ide-wal
+*.suo

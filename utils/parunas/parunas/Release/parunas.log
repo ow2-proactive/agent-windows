@@ -1,0 +1,13 @@
+﻿  parunas.cpp
+c:\users\pedro\source\repos\agent-windows\utils\parunas\parunas\parunas.cpp(307): warning C4477: 'wprintf' : format string '%ws' requires an argument of type 'wchar_t *', but variadic argument 1 has type 'const char *'
+  c:\users\pedro\source\repos\agent-windows\utils\parunas\parunas\parunas.cpp(307): note: consider using '%hs' in the format string
+  c:\users\pedro\source\repos\agent-windows\utils\parunas\parunas\parunas.cpp(307): note: consider using '%Ts' in the format string
+c:\users\pedro\source\repos\agent-windows\utils\parunas\parunas\parunas.cpp(526): warning C4477: 'wprintf' : format string '%ws' requires an argument of type 'wchar_t *', but variadic argument 1 has type 'const char *'
+  c:\users\pedro\source\repos\agent-windows\utils\parunas\parunas\parunas.cpp(526): note: consider using '%hs' in the format string
+  c:\users\pedro\source\repos\agent-windows\utils\parunas\parunas\parunas.cpp(526): note: consider using '%Ts' in the format string
+  Generating code
+  0 of 22 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  parunas.vcxproj -> C:\Users\pedro\source\repos\agent-windows\\bin\Release\parunas.exe

@@ -1,0 +1,8 @@
+﻿  stdafx.cpp
+  test.cpp
+  WinAES.cpp
+     Creating library C:\Users\pedro\source\repos\agent-windows\\bin\Release\pacrypt.lib and object C:\Users\pedro\source\repos\agent-windows\\bin\Release\pacrypt.exp
+  Generating code
+  All 797 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  pacrypt.vcxproj -> C:\Users\pedro\source\repos\agent-windows\\bin\Release\pacrypt.dll

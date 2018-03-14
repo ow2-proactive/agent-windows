@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigParser", "ConfigParser\ConfigParser.csproj", "{7A2374A3-842C-4A95-8DCA-2E5E011835F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProActiveAgent", "ProActiveAgent\ProActiveAgent.csproj", "{91B8D1E6-3204-4AC5-91A6-6CB53C0F03F2}"
@@ -119,5 +121,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {685D240F-561C-44B8-98AE-68EF9979A325}
 	EndGlobalSection
 EndGlobal

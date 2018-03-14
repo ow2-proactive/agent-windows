@@ -35,4 +35,7 @@
   <ItemGroup>
     <ResourceCompile Include="pacrypt.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>
