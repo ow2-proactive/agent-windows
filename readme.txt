@@ -1,10 +1,10 @@
 ProActive Windows Agent 2.2
 
-La solution comporte 5 projets :
+La solution inclut 5 projets :
 
 Agent FirstSetup
 ======================
-Permert de définir les paramètres à l'installation via la GUI.
+Permert de dï¿½finir les paramï¿½tres ï¿½ l'installation via la GUI.
 Contient la classe "SvrInstaller" qui se charge d'installer le service
 
 
@@ -12,7 +12,7 @@ AgentForAgent
 ======================
 Il s'agit de l'interface graphique permettant de
 - Modifier le fichier de configuration xml
-- Démarrer/Arreter le service
+- Dï¿½marrer/Arreter le service
 - Voir les logs
 
 
@@ -23,10 +23,10 @@ Relatif au fichier de configuration, on y retrouve les classes en rapport avec l
 
 ProActiveAgent
 ======================
-Ce projet correspond au service qui est installé. La classe WindowsService lit la configuration et démarre/arrete les runtimes.
-On y retrouve également les surcharges des méthodes OnStart(), OnStop(), ...
+Ce projet correspond au service qui est installï¿½. La classe WindowsService lit la configuration et dï¿½marre/arrete les runtimes.
+On y retrouve ï¿½galement les surcharges des mï¿½thodes OnStart(), OnStop(), ...
 
 
 ScreenSaver
 ======================
-L'écran de veille ProActive qui correspond à nu évènement de démarrage de runtime
+L'ï¿½cran de veille ProActive qui correspond ï¿½ nu ï¿½vï¿½nement de dï¿½marrage de runtime
