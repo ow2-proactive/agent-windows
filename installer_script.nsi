@@ -952,15 +952,15 @@ Section "ProActive Agent"
                 ; In standlaone mode inject schedworker absolute path into <proactiveHome> and <credential> elements values
                 !insertmacro _ReplaceInFile "$ConfigDir\${CONFIG_NAME}" "<proactiveHome />" "<proactiveHome>$INSTDIR\schedworker</proactiveHome>"
                 Delete "$ConfigDir\${CONFIG_NAME}.old"
-                !insertmacro _ReplaceInFile "$ConfigDir\${CONFIG_NAME}" "<credential />" "<credential>$INSTDIR\schedworker\config\authentication\rm.cred</credential>"
+                !insertmacro _ReplaceInFile "$ConfigDir\${CONFIG_NAME}" "<credential />" "<credential>$INSTDIR\schedworker\config\authentication\credentials\rm.cred</credential>"
                 Delete "$ConfigDir\${CONFIG_NAME}.old"
                 !insertmacro _ReplaceInFile "$ConfigDir\${CONFIG_DAY_NAME}" "<proactiveHome />" "<proactiveHome>$INSTDIR\schedworker</proactiveHome>"
                 Delete "$ConfigDir\${CONFIG_DAY_NAME}.old"
-                !insertmacro _ReplaceInFile "$ConfigDir\${CONFIG_DAY_NAME}" "<credential />" "<credential>$INSTDIR\schedworker\config\authentication\rm.cred</credential>"
+                !insertmacro _ReplaceInFile "$ConfigDir\${CONFIG_DAY_NAME}" "<credential />" "<credential>$INSTDIR\schedworker\config\authentication\credentials\rm.cred</credential>"
                 Delete "$ConfigDir\${CONFIG_DAY_NAME}.old"
                 !insertmacro _ReplaceInFile "$ConfigDir\${CONFIG_NIGHT_NAME}" "<proactiveHome />" "<proactiveHome>$INSTDIR\schedworker</proactiveHome>"
                 Delete "$ConfigDir\${CONFIG_NIGHT_NAME}.old"
-                !insertmacro _ReplaceInFile "$ConfigDir\${CONFIG_NIGHT_NAME}" "<credential />" "<credential>$INSTDIR\schedworker\config\authentication\rm.cred</credential>"
+                !insertmacro _ReplaceInFile "$ConfigDir\${CONFIG_NIGHT_NAME}" "<credential />" "<credential>$INSTDIR\schedworker\config\authentication\credentials\rm.cred</credential>"
                 Delete "$ConfigDir\${CONFIG_NIGHT_NAME}.old"
 
                 ; In standalone mode a jre bundle will be installed
