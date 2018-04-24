@@ -121,6 +121,8 @@ namespace AgentForAgent
             this.label14 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.processManagementGroupBox = new System.Windows.Forms.GroupBox();
+            this.nbWorkersEventUpDown = new System.Windows.Forms.NumericUpDown();
+            this.nbWorkersEventLabel = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.maxCpuUsageNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.maxCpuUsageLabel = new System.Windows.Forms.Label();
@@ -150,7 +152,6 @@ namespace AgentForAgent
             this.showButton = new System.Windows.Forms.Button();
             this.createEventButton = new System.Windows.Forms.Button();
             this.deleteEventButton = new System.Windows.Forms.Button();
-            this.eventsList = new AgentForAgent.RefreshingListBox();
             this.saveConfig = new System.Windows.Forms.Button();
             this.closeConfig = new System.Windows.Forms.Button();
             this.proActiveLocationBrowser = new System.Windows.Forms.FolderBrowserDialog();
@@ -160,6 +161,7 @@ namespace AgentForAgent
             this.scriptLocationOpenDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.credentialLocationOpenDialog = new System.Windows.Forms.OpenFileDialog();
+            this.eventsList = new AgentForAgent.RefreshingListBox();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.generalTabPage.SuspendLayout();
@@ -186,6 +188,7 @@ namespace AgentForAgent
             this.customActionGroup.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.processManagementGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nbWorkersEventUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxCpuUsageNumericUpDown)).BeginInit();
             this.eventEditorGroup.SuspendLayout();
             this.startTimeGroupBox.SuspendLayout();
@@ -586,7 +589,7 @@ namespace AgentForAgent
             this.networkInterfacesListBox.HorizontalScrollbar = true;
             this.networkInterfacesListBox.Location = new System.Drawing.Point(6, 19);
             this.networkInterfacesListBox.Name = "networkInterfacesListBox";
-            this.networkInterfacesListBox.Size = new System.Drawing.Size(262, 160);
+            this.networkInterfacesListBox.Size = new System.Drawing.Size(262, 134);
             this.networkInterfacesListBox.TabIndex = 2;
             this.toolTip.SetToolTip(this.networkInterfacesListBox, "The list of available network interfaces.");
             this.networkInterfacesListBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.networkInterfacesListBox_MouseDoubleClick);
@@ -1098,6 +1101,8 @@ namespace AgentForAgent
             // 
             // processManagementGroupBox
             // 
+            this.processManagementGroupBox.Controls.Add(this.nbWorkersEventUpDown);
+            this.processManagementGroupBox.Controls.Add(this.nbWorkersEventLabel);
             this.processManagementGroupBox.Controls.Add(this.label20);
             this.processManagementGroupBox.Controls.Add(this.maxCpuUsageNumericUpDown);
             this.processManagementGroupBox.Controls.Add(this.maxCpuUsageLabel);
@@ -1105,10 +1110,33 @@ namespace AgentForAgent
             this.processManagementGroupBox.Controls.Add(this.processPriorityComboBox);
             this.processManagementGroupBox.Location = new System.Drawing.Point(259, 142);
             this.processManagementGroupBox.Name = "processManagementGroupBox";
-            this.processManagementGroupBox.Size = new System.Drawing.Size(409, 51);
+            this.processManagementGroupBox.Size = new System.Drawing.Size(409, 97);
             this.processManagementGroupBox.TabIndex = 20;
             this.processManagementGroupBox.TabStop = false;
             this.processManagementGroupBox.Text = "Process Management";
+            // 
+            // nbWorkersEventUpDown
+            // 
+            this.nbWorkersEventUpDown.Location = new System.Drawing.Point(327, 54);
+            this.nbWorkersEventUpDown.Maximum = new decimal(new int[] {
+            32,
+            0,
+            0,
+            0});
+            this.nbWorkersEventUpDown.Name = "nbWorkersEventUpDown";
+            this.nbWorkersEventUpDown.Size = new System.Drawing.Size(48, 20);
+            this.nbWorkersEventUpDown.TabIndex = 6;
+            this.toolTip.SetToolTip(this.nbWorkersEventUpDown, "Specifies the number of Runtimes to spawn.");
+            this.nbWorkersEventUpDown.ValueChanged += new System.EventHandler(this.nbWorkersEventUpDown_ValueChanged);
+            // 
+            // nbWorkersEventLabel
+            // 
+            this.nbWorkersEventLabel.AutoSize = true;
+            this.nbWorkersEventLabel.Location = new System.Drawing.Point(220, 56);
+            this.nbWorkersEventLabel.Name = "nbWorkersEventLabel";
+            this.nbWorkersEventLabel.Size = new System.Drawing.Size(99, 13);
+            this.nbWorkersEventLabel.TabIndex = 5;
+            this.nbWorkersEventLabel.Text = "Number of workers:";
             // 
             // label20
             // 
@@ -1468,16 +1496,6 @@ namespace AgentForAgent
             this.deleteEventButton.UseVisualStyleBackColor = true;
             this.deleteEventButton.Click += new System.EventHandler(this.deleteEventButton_Click);
             // 
-            // eventsList
-            // 
-            this.eventsList.FormattingEnabled = true;
-            this.eventsList.Location = new System.Drawing.Point(6, 19);
-            this.eventsList.Name = "eventsList";
-            this.eventsList.Size = new System.Drawing.Size(235, 303);
-            this.eventsList.TabIndex = 0;
-            this.toolTip.SetToolTip(this.eventsList, "The list of weekly plans.");
-            this.eventsList.SelectedIndexChanged += new System.EventHandler(this.eventsList_SelectedIndexChanged);
-            // 
             // saveConfig
             // 
             this.saveConfig.Enabled = false;
@@ -1529,6 +1547,16 @@ namespace AgentForAgent
             // 
             this.credentialLocationOpenDialog.DefaultExt = "cred";
             this.credentialLocationOpenDialog.Filter = "Credentials .cred|*.cred";
+            // 
+            // eventsList
+            // 
+            this.eventsList.FormattingEnabled = true;
+            this.eventsList.Location = new System.Drawing.Point(6, 19);
+            this.eventsList.Name = "eventsList";
+            this.eventsList.Size = new System.Drawing.Size(235, 303);
+            this.eventsList.TabIndex = 0;
+            this.toolTip.SetToolTip(this.eventsList, "The list of weekly plans.");
+            this.eventsList.SelectedIndexChanged += new System.EventHandler(this.eventsList_SelectedIndexChanged);
             // 
             // ConfigurationEditor
             // 
@@ -1588,6 +1616,7 @@ namespace AgentForAgent
             this.tabPage2.PerformLayout();
             this.processManagementGroupBox.ResumeLayout(false);
             this.processManagementGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nbWorkersEventUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxCpuUsageNumericUpDown)).EndInit();
             this.eventEditorGroup.ResumeLayout(false);
             this.startTimeGroupBox.ResumeLayout(false);
@@ -1727,6 +1756,8 @@ namespace AgentForAgent
         private System.Windows.Forms.NumericUpDown nbWorkersNumericUpDown;
         private System.Windows.Forms.Button addArgsParameterButton;
         private System.Windows.Forms.Button removeArgsParameterButton;
+        private System.Windows.Forms.NumericUpDown nbWorkersEventUpDown;
+        private System.Windows.Forms.Label nbWorkersEventLabel;
     }
 
 

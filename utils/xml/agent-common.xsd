@@ -400,7 +400,7 @@
 
       If present but empty then the node is started with "-w", which means that it will use as many workers as there are cores.
     </xsd:documentation></xsd:annotation>
-    <xsd:union memberTypes="xsd:positiveInteger">
+    <xsd:union memberTypes="xsd:nonNegativeInteger">
       <xsd:simpleType>
         <xsd:restriction base="xsd:string">
           <xsd:enumeration value=""/>

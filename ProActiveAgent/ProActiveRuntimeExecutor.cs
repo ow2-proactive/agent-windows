@@ -108,6 +108,9 @@ namespace ProActiveAgent
         /// <summary>
         /// The common start information shared between all executors.</summary>
         private readonly CommonStartInfo commonStartInfo;
+        /// <summary>
+        /// Keep track of the nbWorkers desired for the current executor.</summary>
+        private uint nbWorkers;
 
         /// <summary>
         /// Process object that represents running runner script.</summary>                        
@@ -265,15 +268,17 @@ namespace ProActiveAgent
                     }
                 }
 
-                foreach (string parameter in this.commonStartInfo.configuration.config.additionalCmdArgs)
-                {                   
-                    argumentsBuilder.Append(" " + parameter);
+                if (this.commonStartInfo.configuration.config.additionalCmdArgs != null)
+                {
+                    foreach (string parameter in this.commonStartInfo.configuration.config.additionalCmdArgs)
+                    {
+                        argumentsBuilder.Append(" " + parameter);
+                    }
                 }
 
-                ushort nbWorkers = this.commonStartInfo.configuration.config.nbWorkers;
-                if (nbWorkers != 0)
+                if (this.nbWorkers != 0)
                 {
-                    argumentsBuilder.Append(" -w " + nbWorkers);
+                    argumentsBuilder.Append(" -w " + this.nbWorkers);
                 }
                 else
                 {
@@ -367,6 +372,12 @@ namespace ProActiveAgent
             this.rootProcess.BeginOutputReadLine();
 
             return true;
+        }
+
+        // set the internal nbWorkers to update command line according to events
+        internal void setNbWorkers(ushort nbWorkers)
+        {
+            this.nbWorkers = nbWorkers;
         }
 
         // fires whenever errors output is produced
