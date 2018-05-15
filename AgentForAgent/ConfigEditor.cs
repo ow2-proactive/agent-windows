@@ -1355,5 +1355,15 @@ namespace AgentForAgent
         {
 
         }
+
+        private void networkInterfaceListGroupBox_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void networkInterfaceListGroupBox_Enter_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
