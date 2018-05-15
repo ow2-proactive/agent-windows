@@ -46,13 +46,15 @@ namespace ProActiveAgent
         private readonly DateTime _stopTime;
         private readonly ProcessPriorityClass _processPriority;
         private readonly uint _maxCpuUsage;
+        private readonly ushort _nbWorkers;
 
-        public StartActionInfo(ConnectionType connection, DateTime stopTime, ProcessPriorityClass processPriority, uint maxCpuUsage)
+        public StartActionInfo(ConnectionType connection, DateTime stopTime, ProcessPriorityClass processPriority, uint maxCpuUsage, ushort nbWorkers)
         {
             this._connection = connection;
             this._stopTime = stopTime;
             this._processPriority = processPriority;
             this._maxCpuUsage = maxCpuUsage;
+            this._nbWorkers = nbWorkers;
         }
 
         public ConnectionType action
@@ -84,6 +86,14 @@ namespace ProActiveAgent
             get
             {
                 return this._maxCpuUsage;
+            }
+        }
+
+        public ushort nbWorkers
+        {
+            get
+            {
+                return this._nbWorkers;
             }
         }
     }

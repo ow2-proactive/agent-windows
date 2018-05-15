@@ -91,7 +91,8 @@ namespace ProActiveAgent
                     commonStartInfo.enabledConnection,
                     DateTime.MaxValue,
                     commonStartInfo.configuration.config.processPriority,
-                    commonStartInfo.configuration.config.maxCpuUsage));
+                    commonStartInfo.configuration.config.maxCpuUsage,
+                    commonStartInfo.configuration.config.nbWorkers));
             }
             else
             {
@@ -154,7 +155,8 @@ namespace ProActiveAgent
                         commonStartInfo.enabledConnection,
                         absoluteStopTime,
                         cEvent.config.processPriority,
-                        cEvent.config.maxCpuUsage);
+                        cEvent.config.maxCpuUsage,
+                        cEvent.config.nbWorkers);
 
                     LOGGER.Info("Loading weekly event [" + absoluteStartTime.DayOfWeek + ":" + absoluteStartTime.ToString(Constants.DATE_FORMAT) + "] -> [" +
                             absoluteStopTime.DayOfWeek + ":" + absoluteStopTime.ToString(Constants.DATE_FORMAT) + "]");
@@ -201,6 +203,8 @@ namespace ProActiveAgent
                 }
                 // Substract from the barrier a safety margin interval
                 p.restartBarrierDateTime = restartBarrierDateTime.Subtract(SAFETY_MARGIN_TIMESPAN);
+                // Send the amount of nbWokers of the action, might vary on the planning
+                p.setNbWorkers(actionInfo.nbWorkers);
                 // Send the start
                 p.sendStartAction(ApplicationType.AgentScheduler);
                 // Apply process priority and max cpu usage

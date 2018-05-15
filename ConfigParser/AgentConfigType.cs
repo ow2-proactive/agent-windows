@@ -58,6 +58,12 @@ namespace ConfigParser
         public string[] jvmParameters;
 
         /// <summary>
+        /// The list of parameters to be passed as argument to proactive agent.</summary>
+        [XmlArray("additionalCmdArgs")]
+        [XmlArrayItem("param")]
+        public string[] additionalCmdArgs;
+
+        /// <summary>
         /// The memory limitation in MBytes. 0 means no memory limit.</summary>
         [XmlElement("memoryLimit")] 
         public ushort memoryLimit;

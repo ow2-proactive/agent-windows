@@ -38,7 +38,7 @@ using System.Xml.Serialization;
 
 namespace ConfigParser
 {
-    [XmlRoot("agent", Namespace = "urn:proactive:agent:1.0:windows")]
+    [XmlRoot("agent", Namespace = "urn:proactive:agent:1.1:windows")]
     public sealed class AgentType
     {
         /// <summary>

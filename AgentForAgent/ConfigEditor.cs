@@ -68,7 +68,8 @@ namespace AgentForAgent
 
         // Internal data used for jvm options list customization
         private const int DELTA = 5;
-        private System.Windows.Forms.TextBox editBox;
+        private System.Windows.Forms.TextBox editBoxJvm;
+        private System.Windows.Forms.TextBox editBoxArgs;
         int itemSelected = -1;
 
         private IniFile iniConfiguration;
@@ -126,15 +127,13 @@ namespace AgentForAgent
                 this.nbRuntimesNumericUpDown.Enabled = true;
             }
 
-            if (conf.config.nbWorkers == 0)
+            if (this.configuration.isAlwaysAvailable() && this.configuration.events.Length == 1)
             {
-                this.nbWorkersNumericUpDown.Value = Environment.ProcessorCount;
+                this.configuration.events[0].config.nbWorkers = Convert.ToUInt16(this.nbWorkersEventUpDown.Value);
             }
-            else
-            {
-                this.nbWorkersNumericUpDown.Value = conf.config.nbWorkers;
-                this.nbWorkersNumericUpDown.Enabled = true;
-            }
+
+            this.nbWorkersNumericUpDown.Value = conf.config.nbWorkers;
+            this.nbWorkersNumericUpDown.Enabled = true;
 
             ////////////////////////////////////////
             // Load events from the configuration //
@@ -149,12 +148,14 @@ namespace AgentForAgent
                 this.alwaysAvailableCheckBox.Checked = true;
                 this.processPriorityComboBox.SelectedItem = Enum.GetName(typeof(ProcessPriorityClass), configuration.config.processPriority);
                 this.maxCpuUsageNumericUpDown.Value = configuration.config.maxCpuUsage;
+                this.nbWorkersEventUpDown.Value = configuration.config.nbWorkers;
             }
             else
             {
                 // Set default values for the no events selected state
                 this.processPriorityComboBox.SelectedIndex = 0;
                 this.maxCpuUsageNumericUpDown.Value = this.maxCpuUsageNumericUpDown.Maximum;
+                this.nbWorkersEventUpDown.Value = this.nbWorkersEventUpDown.Minimum;
 
                 // Load config events in the GUI
                 foreach (CalendarEventType cEv in this.configuration.events)
@@ -249,44 +250,84 @@ namespace AgentForAgent
             this.saveConfig.Enabled = true;
         }
 
-        private void CreateEditBox(object sender)
+        private void CreateEditBoxJvmOption(object sender)
         {
-            this.jvmOptionsListBox = (ListBox)sender;
-            this.itemSelected = this.jvmOptionsListBox.SelectedIndex;
-            Rectangle r = this.jvmOptionsListBox.GetItemRectangle(this.itemSelected);
-            string itemText = (string)this.jvmOptionsListBox.Items[this.itemSelected];
+            ListBox optionListBox = this.jvmOptionsListBox;
+            this.itemSelected = optionListBox.SelectedIndex;
+            Rectangle r = optionListBox.GetItemRectangle(this.itemSelected);
+            string itemText = (string)optionListBox.Items[this.itemSelected];
 
-            editBox.Location = new System.Drawing.Point(r.X /*+ DELTA*/, r.Y/* + DELTA*/);
-            editBox.Size = new System.Drawing.Size(r.Width /*- 10*/, r.Height/* - DELTA*/);
-            editBox.Show();
-            this.jvmOptionsListBox.Controls.AddRange(new System.Windows.Forms.Control[] { this.editBox });
-            editBox.Text = itemText;
-            editBox.Focus();
-            editBox.SelectAll();
-            editBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.EditOver);
-            editBox.LostFocus += new System.EventHandler(this.FocusOver);
+            editBoxJvm.Location = new System.Drawing.Point(r.X /*+ DELTA*/, r.Y/* + DELTA*/);
+            editBoxJvm.Size = new System.Drawing.Size(r.Width /*- 10*/, r.Height/* - DELTA*/);
+            editBoxJvm.Show();
+            optionListBox.Controls.AddRange(new System.Windows.Forms.Control[] { this.editBoxJvm });
+            editBoxJvm.Text = itemText;
+            editBoxJvm.Focus();
+            editBoxJvm.SelectAll();
+            editBoxJvm.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.EditOverJvmOption);
+            editBoxJvm.LostFocus += new System.EventHandler(this.FocusOverJvmOption);
 
             this.saveConfig.Enabled = true;
         }
 
-        private void FocusOver(object sender, System.EventArgs e)
+        private void FocusOverJvmOption(object sender, System.EventArgs e)
         {
-            this.jvmOptionsListBox.Items[this.itemSelected] = editBox.Text;
-            editBox.Hide();
+            this.jvmOptionsListBox.Items[this.itemSelected] = editBoxJvm.Text;
+            editBoxJvm.Hide();
         }
 
-        private void EditOver(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        private void EditOverJvmOption(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
             if (e.KeyChar == 13) //Keys.Enter
             {
-                this.jvmOptionsListBox.Items[this.itemSelected] = editBox.Text;
-                this.editBox.Hide();
+                this.jvmOptionsListBox.Items[this.itemSelected] = editBoxJvm.Text;
+                this.editBoxJvm.Hide();
                 this.jvmOptionsListBox.Focus();
                 return;
             }
 
             if (e.KeyChar == 27) //Keys.Escape
-                editBox.Hide();
+                editBoxJvm.Hide();
+        }
+
+        private void CreateEditBoxArgsOption(object sender)
+        {
+            ListBox optionListBox = this.argsOptionsListBox;
+            this.itemSelected = optionListBox.SelectedIndex;
+            Rectangle r = optionListBox.GetItemRectangle(this.itemSelected);
+            string itemText = (string)optionListBox.Items[this.itemSelected];
+
+            editBoxArgs.Location = new System.Drawing.Point(r.X /*+ DELTA*/, r.Y/* + DELTA*/);
+            editBoxArgs.Size = new System.Drawing.Size(r.Width /*- 10*/, r.Height/* - DELTA*/);
+            editBoxArgs.Show();
+            optionListBox.Controls.AddRange(new System.Windows.Forms.Control[] { this.editBoxArgs });
+            editBoxArgs.Text = itemText;
+            editBoxArgs.Focus();
+            editBoxArgs.SelectAll();
+            editBoxArgs.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.EditOverArgsOption);
+            editBoxArgs.LostFocus += new System.EventHandler(this.FocusOverArgsOption);
+
+            this.saveConfig.Enabled = true;
+        }
+
+        private void FocusOverArgsOption(object sender, System.EventArgs e)
+        {
+            this.argsOptionsListBox.Items[this.itemSelected] = editBoxArgs.Text;
+            editBoxArgs.Hide();
+        }
+
+        private void EditOverArgsOption(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13) //Keys.Enter
+            {
+                this.argsOptionsListBox.Items[this.itemSelected] = editBoxArgs.Text;
+                this.editBoxArgs.Hide();
+                this.argsOptionsListBox.Focus();
+                return;
+            }
+
+            if (e.KeyChar == 27) //Keys.Escape
+                editBoxArgs.Hide();
         }
 
         /**************************************************************
@@ -353,6 +394,19 @@ namespace AgentForAgent
                 this.configuration.config.jvmParameters = null;
             }
 
+            // Copy all argument options from listbox into the cofiguration
+            values = new string[this.argsOptionsListBox.Items.Count];
+            if (this.argsOptionsListBox.Items.Count > 0)
+            {
+                this.argsOptionsListBox.Items.CopyTo(values, 0);
+                this.configuration.config.additionalCmdArgs = values;
+            }
+            else
+            {
+                // The schema does not support empty <jvmParameters/> element
+                this.configuration.config.additionalCmdArgs = null;
+            }
+
             // Set the on runtime exit script
             this.configuration.config.onRuntimeExitScript = this.scriptLocationTextBox.Text;
 
@@ -368,6 +422,12 @@ namespace AgentForAgent
 
             //--Events list                        
             this.internalCopyEventsList();
+            //if it is always available it will create a single event that must have the same nbWorkers as the global
+            if(this.configuration.isAlwaysAvailable() && this.configuration.events.Length == 1)
+            {
+                this.configuration.events[0].config.nbWorkers = this.configuration.config.nbWorkers;
+            }
+
             // Save ProActive Communication Protocol and Port initial value
             this.configuration.config.protocol = (string)this.protocolComboBox.SelectedItem;
             this.configuration.config.portRange.first = Convert.ToUInt16(this.portInitialValueNumericUpDown.Value);
@@ -614,7 +674,16 @@ namespace AgentForAgent
             this.secondsDuration.Value = cEv.duration.seconds;
             this.processPriorityComboBox.SelectedItem = Enum.GetName(typeof(ProcessPriorityClass), cEv.config.processPriority);
             this.maxCpuUsageNumericUpDown.Value = cEv.config.maxCpuUsage;
+            if (cEv.config.nbWorkers < this.nbWorkersEventUpDown.Minimum)
+            {
+                this.nbWorkersEventUpDown.Value = this.nbWorkersEventUpDown.Minimum;
+            }
+            else
+            {
+                this.nbWorkersEventUpDown.Value = cEv.config.nbWorkers;
+            }
             this.eventEditorGroup.Enabled = true;
+            this.nbWorkersEventUpDown.Enabled = true;
         }
 
 
@@ -623,6 +692,7 @@ namespace AgentForAgent
         {
             CalendarEventType calEvent = new CalendarEventType();
             calEvent.config = new AgentConfigType();
+            calEvent.config.nbWorkers = Convert.ToUInt16(this.nbWorkersEventUpDown.Minimum);
             int indexToSelect = this.eventsList.Items.Add(calEvent);
             // Select the created item
             this.eventsList.SelectedIndex = indexToSelect;
@@ -653,6 +723,7 @@ namespace AgentForAgent
                     {
                         // Disable other widgets if there is no more items
                         this.eventEditorGroup.Enabled = false;
+                        this.nbWorkersEventUpDown.Enabled = false;
                     }
                 }
                 this.saveConfig.Enabled = true;
@@ -813,10 +884,23 @@ namespace AgentForAgent
             this.saveConfig.Enabled = true;
         }
 
-        //-- END LISTENERS
+        private void nbWorkersEventUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (eventsList.SelectedIndex == -1)
+                return;
+            CalendarEventType calEvent = (CalendarEventType)this.eventsList.SelectedItem;
+            calEvent.config.nbWorkers = (ushort)this.nbWorkersEventUpDown.Value;
+            // Refresh widget
+            this.eventsList.RefreshItem(eventsList.SelectedIndex);
+            this.alwaysAvailableCheckBox.Checked = calEvent.isAlwaysAvailable();
+            this.saveConfig.Enabled = true;
+        }
 
-        //--Behaviour of the "Always" Checkbox
-        private void alwaysAvailableCheckBox_CheckStateChanged(object sender, EventArgs e)
+
+    //-- END LISTENERS
+
+    //--Behaviour of the "Always" Checkbox
+    private void alwaysAvailableCheckBox_CheckStateChanged(object sender, EventArgs e)
         {
             if (alwaysAvailableCheckBox.Checked)
             {
@@ -840,12 +924,20 @@ namespace AgentForAgent
                 // 3. Add a single event to the configuration
                 this.configuration.events = new CalendarEventType[] { CalendarEventType.makeAlwaysAvailableDate() };
 
+                // 3.1 Make sure this single event uses the global runtime instance
+                if (configuration.events.Length == 1)
+                {
+                    configuration.events[0].config.nbWorkers = this.configuration.config.nbWorkers;
+                }
+
                 // 4. Load values for the process priority and the max cpu usage                
                 this.processPriorityComboBox.SelectedItem = Enum.GetName(typeof(ProcessPriorityClass), configuration.config.processPriority);
                 this.maxCpuUsageNumericUpDown.Value = configuration.config.maxCpuUsage;
+                this.nbWorkersEventUpDown.Value = configuration.config.nbWorkers;
 
                 // Disable buttons and group boxes
                 this.eventEditorGroup.Enabled = false;
+                this.nbWorkersEventUpDown.Enabled = false;
                 this.eventsList.Enabled = false;
                 this.createEventButton.Enabled = false;
                 this.deleteEventButton.Enabled = false;
@@ -856,6 +948,7 @@ namespace AgentForAgent
                 if (this.eventsList.SelectedIndex != -1)
                 {
                     this.eventEditorGroup.Enabled = true;
+                    this.nbWorkersEventUpDown.Enabled = true;
                 }
                 eventsList.Enabled = true;
                 createEventButton.Enabled = true;
@@ -1018,6 +1111,14 @@ namespace AgentForAgent
             saveConfig.Enabled = true;
         }
 
+        private void addArgsOptionButton_Click(object sender, EventArgs e)
+        {
+            // Add a new entry in the arguments option list box
+            int i = this.argsOptionsListBox.Items.Add("New option");
+            this.argsOptionsListBox.SetSelected(i, true);
+            saveConfig.Enabled = true;
+        }
+
         private void removeJvmOptionButton_Click(object sender, EventArgs e)
         {
             int selectedIndex = this.jvmOptionsListBox.SelectedIndex;
@@ -1041,26 +1142,63 @@ namespace AgentForAgent
             }
         }
 
+        private void removeArgsOptionButton_Click(object sender, EventArgs e)
+        {
+            int selectedIndex = this.argsOptionsListBox.SelectedIndex;
+            if (selectedIndex != -1)
+            {
+                this.argsOptionsListBox.Items.RemoveAt(selectedIndex--);
+                // After deletion automatically select precedent if there is one
+                if (selectedIndex > -1)
+                {
+                    this.argsOptionsListBox.SelectedIndex = selectedIndex;
+                }
+                else
+                {
+                    // Try to select the last if there is one
+                    if (this.argsOptionsListBox.Items.Count > 0)
+                    {
+                        this.argsOptionsListBox.SelectedIndex = this.argsOptionsListBox.Items.Count - 1;
+                    }
+                }
+                saveConfig.Enabled = true;
+            }
+        }
+
         private void ConfigEditor_Load(object sender, EventArgs e)
         {
-            this.editBox = new System.Windows.Forms.TextBox();
-            this.editBox.Location = new System.Drawing.Point(0, 0);
-            this.editBox.Size = new System.Drawing.Size(0, 0);
-            this.editBox.Hide();
-            this.jvmOptionsListBox.Controls.AddRange(new System.Windows.Forms.Control[] { this.editBox });
-            this.editBox.Text = "";
-            this.editBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.EditOver);
-            this.editBox.LostFocus += new System.EventHandler(this.FocusOver);
-            //this.editBox.BackColor = Color.Beige;
-            //this.editBox.Font = new Font("Varanda", 15, FontStyle.Regular | FontStyle.Underline, GraphicsUnit.Pixel);
-            //this.editBox.ForeColor = Color.Blue;
-            this.editBox.BorderStyle = BorderStyle.FixedSingle;
+            this.editBoxJvm = new System.Windows.Forms.TextBox();
+            this.editBoxJvm.Location = new System.Drawing.Point(0, 0);
+            this.editBoxJvm.Size = new System.Drawing.Size(0, 0);
+            this.editBoxJvm.Hide();
 
+            this.jvmOptionsListBox.Controls.AddRange(new System.Windows.Forms.Control[] { this.editBoxJvm });
+            this.editBoxJvm.Text = "";
+            this.editBoxJvm.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.EditOverJvmOption);
+            this.editBoxJvm.LostFocus += new System.EventHandler(this.FocusOverJvmOption);
+            this.editBoxJvm.BorderStyle = BorderStyle.FixedSingle;
             if (this.configuration.config.jvmParameters != null)
             {
                 this.jvmOptionsListBox.Items.Clear();
                 this.jvmOptionsListBox.Items.AddRange(this.configuration.config.jvmParameters);
             }
+
+            this.editBoxArgs = new System.Windows.Forms.TextBox();
+            this.editBoxArgs.Location = new System.Drawing.Point(0, 0);
+            this.editBoxArgs.Size = new System.Drawing.Size(0, 0);
+            this.editBoxArgs.Hide();
+
+            this.argsOptionsListBox.Controls.AddRange(new System.Windows.Forms.Control[] { this.editBoxArgs });
+            this.editBoxArgs.Text = "";
+            this.editBoxArgs.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.EditOverArgsOption);
+            this.editBoxArgs.LostFocus += new System.EventHandler(this.FocusOverArgsOption);
+            this.editBoxArgs.BorderStyle = BorderStyle.FixedSingle;
+            if (this.configuration.config.additionalCmdArgs != null)
+            {
+                this.argsOptionsListBox.Items.Clear();
+                this.argsOptionsListBox.Items.AddRange(this.configuration.config.additionalCmdArgs);
+            }
+
         }
 
         private void jvmOptionsListBox_DoubleClick(object sender, EventArgs e)
@@ -1078,7 +1216,7 @@ namespace AgentForAgent
                     this.jvmOptionsListBox.SelectedIndex = this.jvmOptionsListBox.Items.Count - 1;
                 }
             }
-            this.CreateEditBox(sender);
+            this.CreateEditBoxJvmOption(sender);
         }
 
         private void jvmOptionsListBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -1087,7 +1225,36 @@ namespace AgentForAgent
             {
                 if (this.jvmOptionsListBox.SelectedIndex > -1)
                 {
-                    this.CreateEditBox(sender);
+                    this.CreateEditBoxJvmOption(sender);
+                }
+            }
+        }
+
+        private void argsOptionsListBox_DoubleClick(object sender, EventArgs e)
+        {
+            // If no selected items and list box is empty add one item and select it
+            // otherwise select current item
+            if (this.argsOptionsListBox.SelectedIndex == -1)
+            {
+                if (this.argsOptionsListBox.Items.Count == 0)
+                {
+                    this.argsOptionsListBox.SelectedIndex = this.argsOptionsListBox.Items.Add("New option");
+                }
+                else
+                {
+                    this.argsOptionsListBox.SelectedIndex = this.argsOptionsListBox.Items.Count - 1;
+                }
+            }
+            this.CreateEditBoxArgsOption(sender);
+        }
+
+        private void argsOptionsListBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 13) // Enter key
+            {
+                if (this.argsOptionsListBox.SelectedIndex > -1)
+                {
+                    this.CreateEditBoxArgsOption(sender);
                 }
             }
         }
@@ -1127,6 +1294,14 @@ namespace AgentForAgent
 
         private void nbRuntimesNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
+            if (this.configuration.isAlwaysAvailable())
+            {
+                if (this.configuration.events.Length == 1)
+                {
+                    this.configuration.events[0].config.nbRuntimes = this.configuration.config.nbRuntimes;
+                }
+                this.nbWorkersEventUpDown.Value = this.configuration.config.nbRuntimes;
+            }
             this.saveConfig.Enabled = true;
         }
 
@@ -1168,6 +1343,17 @@ namespace AgentForAgent
         private void nbWorkersNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             this.saveConfig.Enabled = true;
+        }
+
+
+        private void jvmOptionsListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void argsOptionsListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

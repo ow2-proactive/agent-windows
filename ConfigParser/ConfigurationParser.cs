@@ -51,7 +51,7 @@ namespace ConfigParser
     {
         /// <summary>
         /// The namespace of config files.</summary>
-        public const string CONFIG_NAMESPACE = "urn:proactive:agent:1.0:windows";
+        public const string CONFIG_NAMESPACE = "urn:proactive:agent:1.1:windows";
 
         private static string reason;
 

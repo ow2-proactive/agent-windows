@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<agent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:proactive:agent:1.1:windows">
+  <config>
+    <proactiveHome />
+    <javaHome />
+    <jvmParameters>
+      <param>-Djava.io.tmpdir=JAVA_IO_TMPDIR\${rank}</param>
+      <param>-Dpa.logs.home=JAVA_IO_TMPDIR\${rank}</param>
+      <param>-Dproactive.node.monitoring.db.dir=JAVA_IO_TMPDIR\${rank}\</param>
+      <param>-Dpas.launcher.forkas.method=pwd</param>
+    </jvmParameters>
+    <additionalCmdArgs>
+      <param>-dm</param>
+    </additionalCmdArgs>
+    <memoryLimit>0</memoryLimit>
+    <nbRuntimes>1</nbRuntimes>
+    <nbWorkers>8</nbWorkers>
+    <protocol>pnp</protocol>
+    <portRange first="1100" last="1110" />
+    <onRuntimeExitScript>INSTDIR\delete_temp.bat</onRuntimeExitScript>
+    <processPriority>Normal</processPriority>
+    <maxCpuUsage>100</maxCpuUsage>
+  </config>
+  <events>
+    <event>
+      <start day="Monday" hour="0" minute="0" second="0" />
+      <duration days="6" hours="23" minutes="59" seconds="59" />
+      <config>
+        <memoryLimit>0</memoryLimit>
+        <nbRuntimes>0</nbRuntimes>
+        <nbWorkers>0</nbWorkers>
+        <portRange first="0" last="0" />
+        <processPriority>Normal</processPriority>
+        <maxCpuUsage>100</maxCpuUsage>
+      </config>
+    </event>
+  </events>
+  <connections>
+    <localBind enabled="false">
+      <respawnIncrement>10</respawnIncrement>
+      <javaStarterClass>org.objectweb.proactive.core.util.winagent.PAAgentServiceRMIStarter</javaStarterClass>
+    </localBind>
+    <rmConnection enabled="true">
+      <respawnIncrement>10</respawnIncrement>
+      <javaStarterClass>org.ow2.proactive.resourcemanager.utils.RMNodeStarter</javaStarterClass>
+      <nodename>PA-AGENT_NODE</nodename>
+    </rmConnection>
+    <customConnection enabled="false">
+      <respawnIncrement>10</respawnIncrement>
+      <javaStarterClass>user.Starter</javaStarterClass>
+    </customConnection>
+  </connections>
+</agent>
