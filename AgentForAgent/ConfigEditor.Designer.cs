@@ -218,14 +218,14 @@ namespace AgentForAgent
             this.groupBox1.Controls.Add(this.proactiveDirectory);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(665, 175);
+            this.groupBox1.Size = new System.Drawing.Size(665, 166);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "ProActive Configuration";
             // 
             // removeArgsParameterButton
             // 
-            this.removeArgsParameterButton.Location = new System.Drawing.Point(3, 121);
+            this.removeArgsParameterButton.Location = new System.Drawing.Point(3, 119);
             this.removeArgsParameterButton.Name = "removeArgsParameterButton";
             this.removeArgsParameterButton.Size = new System.Drawing.Size(86, 21);
             this.removeArgsParameterButton.TabIndex = 15;
@@ -235,7 +235,7 @@ namespace AgentForAgent
             // 
             // addArgsParameterButton
             // 
-            this.addArgsParameterButton.Location = new System.Drawing.Point(3, 94);
+            this.addArgsParameterButton.Location = new System.Drawing.Point(3, 92);
             this.addArgsParameterButton.Name = "addArgsParameterButton";
             this.addArgsParameterButton.Size = new System.Drawing.Size(86, 21);
             this.addArgsParameterButton.TabIndex = 14;
@@ -246,7 +246,7 @@ namespace AgentForAgent
             // argsOptionsListBox
             // 
             this.argsOptionsListBox.FormattingEnabled = true;
-            this.argsOptionsListBox.Location = new System.Drawing.Point(95, 94);
+            this.argsOptionsListBox.Location = new System.Drawing.Point(95, 92);
             this.argsOptionsListBox.Name = "argsOptionsListBox";
             this.argsOptionsListBox.Size = new System.Drawing.Size(175, 69);
             this.argsOptionsListBox.TabIndex = 13;
@@ -259,7 +259,7 @@ namespace AgentForAgent
             // jvmOptionsListBox
             // 
             this.jvmOptionsListBox.FormattingEnabled = true;
-            this.jvmOptionsListBox.Location = new System.Drawing.Point(397, 95);
+            this.jvmOptionsListBox.Location = new System.Drawing.Point(397, 93);
             this.jvmOptionsListBox.Name = "jvmOptionsListBox";
             this.jvmOptionsListBox.Size = new System.Drawing.Size(262, 69);
             this.jvmOptionsListBox.TabIndex = 12;
@@ -271,7 +271,7 @@ namespace AgentForAgent
             // 
             // removeJvmParameterButton
             // 
-            this.removeJvmParameterButton.Location = new System.Drawing.Point(276, 122);
+            this.removeJvmParameterButton.Location = new System.Drawing.Point(276, 120);
             this.removeJvmParameterButton.Name = "removeJvmParameterButton";
             this.removeJvmParameterButton.Size = new System.Drawing.Size(114, 21);
             this.removeJvmParameterButton.TabIndex = 11;
@@ -281,7 +281,7 @@ namespace AgentForAgent
             // 
             // addJvmParameterButton
             // 
-            this.addJvmParameterButton.Location = new System.Drawing.Point(276, 95);
+            this.addJvmParameterButton.Location = new System.Drawing.Point(276, 93);
             this.addJvmParameterButton.Name = "addJvmParameterButton";
             this.addJvmParameterButton.Size = new System.Drawing.Size(114, 21);
             this.addJvmParameterButton.TabIndex = 10;
@@ -564,12 +564,13 @@ namespace AgentForAgent
             this.networkInterfaceListGroupBox.Controls.Add(this.useNetworkInterfaceButton);
             this.networkInterfaceListGroupBox.Controls.Add(this.networkInterfacesListBox);
             this.networkInterfaceListGroupBox.Controls.Add(this.refreshNetworkInterfacesButton);
-            this.networkInterfaceListGroupBox.Location = new System.Drawing.Point(394, 227);
+            this.networkInterfaceListGroupBox.Location = new System.Drawing.Point(394, 184);
             this.networkInterfaceListGroupBox.Name = "networkInterfaceListGroupBox";
-            this.networkInterfaceListGroupBox.Size = new System.Drawing.Size(274, 167);
+            this.networkInterfaceListGroupBox.Size = new System.Drawing.Size(274, 210);
             this.networkInterfaceListGroupBox.TabIndex = 3;
             this.networkInterfaceListGroupBox.TabStop = false;
             this.networkInterfaceListGroupBox.Text = "Available Network Interfaces (Java 6 only)";
+            this.networkInterfaceListGroupBox.Enter += new System.EventHandler(this.networkInterfaceListGroupBox_Enter_1);
             // 
             // useNetworkInterfaceButton
             // 
@@ -587,7 +588,7 @@ namespace AgentForAgent
             // 
             this.networkInterfacesListBox.FormattingEnabled = true;
             this.networkInterfacesListBox.HorizontalScrollbar = true;
-            this.networkInterfacesListBox.Location = new System.Drawing.Point(6, 19);
+            this.networkInterfacesListBox.Location = new System.Drawing.Point(6, 20);
             this.networkInterfacesListBox.Name = "networkInterfacesListBox";
             this.networkInterfacesListBox.Size = new System.Drawing.Size(262, 134);
             this.networkInterfacesListBox.TabIndex = 2;
