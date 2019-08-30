@@ -168,22 +168,35 @@ bool WinAES::AcquireContext( const wchar_t* lpszContainer )
 	// acquire in case the use wants to delete the imported key. The
 	// class destructor will use the index to delete the proper container.
 
-	for( int i = 0; i < _countof(AesProviders); i++ )
+	for (int i = 0; i < _countof(AesProviders); i++)
 	{
 		// Only create a new container if requested
-		if( (AesProviders[i].params.dwFlags & CRYPT_NEWKEYSET) &&
-			!(m_nFlags & CREATE_CONTAINER ) ) { continue; }
+		if ((AesProviders[i].params.dwFlags & CRYPT_NEWKEYSET) &&
+			!(m_nFlags & CREATE_CONTAINER)) {
+			continue;
+		}
 
-		if( CryptAcquireContext( &m_hProvider, lpszContainer, AesProviders[i].params.lpwsz,
-			AesProviders[i].params.dwType, AesProviders[i].params.dwFlags ) ) {
-				m_nIndex = i;			
-				break;
+		if (CryptAcquireContext(&m_hProvider, lpszContainer, AesProviders[i].params.lpwsz,
+			AesProviders[i].params.dwType, AesProviders[i].params.dwFlags)) {
+			m_nIndex = i;
+			break;
 		}
 		else {
+			int lastError = GetLastError();
+			if (lastError == NTE_EXISTS || lastError == NTE_KEYSET_ENTRY_BAD) {
+				CryptAcquireContext(&m_hProvider, lpszContainer, AesProviders[i].params.lpwsz,
+					AesProviders[i].params.dwType, CRYPT_DELETEKEYSET);
+				if (CryptAcquireContext(&m_hProvider, lpszContainer, AesProviders[i].params.lpwsz,
+					AesProviders[i].params.dwType, AesProviders[i].params.dwFlags)) {
+					m_nIndex = i;
+					break;
+				}
+
+			}
 			cerr << "Could not acquire context for ";
 			std::wcerr << AesProviders[i].params.lpwsz;
-			cerr << " : " << ErrorToDefine(GetLastError());			
-			cerr << " (0x" << std::hex << GetLastError() << ")" << endl;			
+			cerr << " : " << ErrorToDefine(GetLastError());
+			cerr << " (0x" << std::hex << GetLastError() << ")" << endl;
 		}
 	}
 
