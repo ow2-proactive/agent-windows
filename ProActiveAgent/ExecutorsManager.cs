@@ -75,8 +75,15 @@ namespace ProActiveAgent
             this.proActiveRuntimeExecutors = new List<ProActiveRuntimeExecutor>(nbProcesses);
             for (int rank = 0; rank < nbProcesses; rank++)
             {
-                ProActiveRuntimeExecutor executor = new ProActiveRuntimeExecutor(commonStartInfo, rank);
-                this.proActiveRuntimeExecutors.Add(executor);
+                try
+                {
+                    ProActiveRuntimeExecutor executor = new ProActiveRuntimeExecutor(commonStartInfo, rank);
+                    this.proActiveRuntimeExecutors.Add(executor);
+                } catch (Exception e)
+                {
+                    LOGGER.Error("Error when creating executor", e);
+                    throw e;
+                }
             }
 
             // Create the start/stop timers for scheduled events
