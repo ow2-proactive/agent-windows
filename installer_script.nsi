@@ -883,11 +883,11 @@ Section "ProActive Agent"
         !insertmacro Log $1
 
         !insertmacro Log "Checking service installation ..."
-        !insertmacro SERVICE "status" ${SERVICE_NAME} '' ""
+        !insertmacro SERVICE "status" ${SERVICE_NAME} ""
         Pop $0
         ${If} $0 != "stopped"
-          !insertmacro Log "!! Unable to install as service !!"
-          MessageBox MB_OK "Unable to install as service. To install manually use sc.exe command" /SD IDOK
+          !insertmacro Log "!! Unable to install as service !! status: $0, expected: stopped"
+          MessageBox MB_OK "Unable to install as service. Check if the ProActiveAgent service already exists with a marked for deletion status." /SD IDOK
           Call RollbackIfSilent
           Abort
         ${EndIf}
@@ -1108,7 +1108,7 @@ Section "ProActive Agent"
         !ifdef STANDALONE
           ${If} ${Silent}
             !insertmacro Log "Starting the ProActiveAgent service ..."
-            !insertmacro SERVICE "start" ${SERVICE_NAME} '' ""
+            !insertmacro SERVICE "start" ${SERVICE_NAME} ""
           ${EndIf}
         !endif
 
@@ -1139,10 +1139,11 @@ Function un.ProActiveAgent
   System::Call "kernel32::GetModuleHandle(t 'shell32.dll') i .s"
   System::Call "kernel32::GetProcAddress(i s, i 680) i .r0"
   System::Call "::$0() i .r0"
-  DetailPrint "Check: Current user is admin? $0"
-  StrCmp $0 '0' 0 +3
-  MessageBox MB_OK "Administrator rights are required to uninstall the ProActive Agent." /SD IDOK
-  Abort
+  ${If} $R0 == '0'
+     MessageBox MB_OK "Administrator rights are required to uninstall the ProActive Agent." /SD IDOK
+     SetErrorLevel 3
+     Abort
+  ${EndIf}  
 
   MessageBox MB_OKCANCEL "This will delete $INSTDIR and all subdirectories and files?" /SD IDOK IDOK DoUninstall
   Abort "Quiting the uninstall process"
@@ -1152,13 +1153,13 @@ Function un.ProActiveAgent
   Call un.TerminateAgentForAgent ; Terminate agent gui
 
   stopServiceLABEL:
-  !insertmacro SERVICE "stop" ${SERVICE_NAME} "" "un."
-  !insertmacro SERVICE "status" ${SERVICE_NAME} "" "un."
+  !insertmacro SERVICE "stop" ${SERVICE_NAME} "un."
+  !insertmacro SERVICE "status" ${SERVICE_NAME} "un."
   Pop $0
   ${If} $0 != "stopped"
     Goto stopServiceLABEL
   ${EndIf}
-  !insertmacro SERVICE "delete" ${SERVICE_NAME} "" "un."
+  !insertmacro SERVICE "delete" ${SERVICE_NAME} "un."
 
   ; Ask the user if he wants to keep the configuration files
   ; In silent mode, we remove everything
