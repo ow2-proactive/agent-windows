@@ -1,0 +1,25 @@
+*.cs eol=crlf
+*.csproj eol=crlf
+*.user eol=crlf
+*.sln eol=crlf
+*.suo eol=crlf
+*.txt eol=crlf
+*.manifest eol=crlf
+*.settings eol=crlf
+*.config eol=crlf
+*.XML eol=crlf
+*.xml eol=crlf
+*.rc eol=crlf
+*.filters eol=crlf
+*.vcxproj eol=crlf
+*.h eol=crlf
+*.cpp eol=crlf
+*.ini eol=crlf
+
+*.bat eol=crlf
+*.nsi eol=crlf
+*.js eol=crlf
+
+*.png binary
+*.ico binary
+*.jpg binary
